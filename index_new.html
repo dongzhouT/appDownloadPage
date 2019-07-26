@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <!-- <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/> -->
+    <title>空气管家下载</title>
+</head>
+<style type="text/css">
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    html {
+        height: 100%;
+    }
+
+    body {
+        max-width: 750px;
+        width: 100%;
+        margin: 0 auto;
+        position: relative;
+        /*overflow: hidden;*/
+    }
+
+    .header {
+        text-align: center;
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+        z-index: -1;
+    }
+
+    .content {
+        width: 100%;
+        z-index: 1;
+        position: absolute;
+        float: left;
+        bottom: 3%;
+        text-align: center;
+        /*padding: 15px;*/
+    }
+
+    .content a {
+        /*margin-right: 30px;*/
+    }
+
+    center > div {
+        margin-bottom: 20px;
+    }
+
+</style>
+<script type="text/javascript">
+    function goDownload() {
+        // TODO
+//        window.location.href = 'http://lcsf.ccstudy.cn:8090/appInstall/LicangPufa/H5ADD124B.apk';
+    }
+</script>
+<body>
+<div class="header">
+    <img src="img/bg.png" style="width: 100%!important;"/>
+</div>
+<div class="content">
+    <center>
+        <div id="android-a-id">
+            <a href="#" onclick="shim.redirect2Android()">
+                <img src="img/android.png" style="width: 90% !important;"/>
+            </a>
+        </div>
+        <div style="display:block;" id="ios-a-id">
+            <a href="#" onclick="shim.redirect2iOS()">
+                <img src="img/ios.png" style="width: 90% !important;"/>
+            </a>
+        </div>
+    </center>
+</div>
+<div id="weixin-tip" style="display:none;">
+    <img src="img/live_weixin.png" style="width:80%;right: 15px;position: absolute;" alt="微信打开"/>
+</div>
+<style>
+    #weixin-tip {
+        position: fixed;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, 0.8);
+        filter: alpha(opacity=80);
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+    }
+
+    #weixin-tip p {
+        text-align: center;
+        margin-top: 10%;
+        padding: 0 5%;
+    }
+</style>
+
+<script type="text/javascript">
+    function is_weixin() {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    var isWeixin = is_weixin();
+    //    if (isWeixin) {
+    //        var weixinTip = document.getElementById('weixin-tip');
+    //        weixinTip.style.display = 'block';
+    //    }
+</script>
+<script type="text/javascript">
+    var androidFilePath = "./";
+
+    var androidLatestUrl = androidFilePath + "AirKeeper_v1.0_release_2019062801_product.apk";
+    var iosLatestUrl = "https://itunes.apple.com/cn/app/id1465689488";
+    var Shim = {
+        redirect2Android: function () {
+            window.location.href = androidLatestUrl;
+        },
+        redirect2iOS: function () {
+            window.location.href = iosLatestUrl;
+        }
+    }
+
+    var shim = Object.create(Shim);
+</script>
+<script type="text/javascript">
+    /*
+     * 智能机浏览器版本信息:
+     */
+    var MyBrowser = {
+        versions: function () {
+            var u = navigator.userAgent, app = navigator.appVersion;
+            return {//移动终端浏览器版本信息
+                trident: u.indexOf('Trident') > -1, //IE内核
+                presto: u.indexOf('Presto') > -1, //opera内核
+                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                mobile: !!u.match(/AppleWebKit.*Mobile.*/) || !!u.match(/AppleWebKit/), //是否为移动终端
+                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+                iPad: u.indexOf('iPad') > -1, //是否iPad
+                webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+            };
+        }(),
+        language: (navigator.browserLanguage || navigator.language).toLowerCase()
+    };
+
+    /*
+     * 根据浏览器版本智能决定ios、android下载链接哪个显示哪个不显示。
+     */
+    var androidA = document.getElementById('android-a-id');
+    var iosA = document.getElementById('ios-a-id');
+    var contentDiv = document.getElementsByClassName("content").item(0);
+    if (MyBrowser.versions.ios || MyBrowser.versions.iPhone || MyBrowser.versions.iPad) {
+        androidA.style.display = 'none';
+        contentDiv.style.bottom = "10%";
+    } else if (MyBrowser.versions.android) {
+        iosA.style.display = 'none';
+        contentDiv.style.bottom = "10%";
+    }
+    if (isWeixin) {
+        var weixinTip = document.getElementById('weixin-tip');
+        weixinTip.style.display = 'block';
+    }
+    if (MyBrowser.versions.ios || MyBrowser.versions.iPhone || MyBrowser.versions.iPad) {
+        shim.redirect2iOS();
+    } else if (isWeixin) {
+        //do nothing
+    } else if (MyBrowser.versions.android) {
+        shim.redirect2Android();
+    }
+    //    androidA.addEventListener('click', function () {
+    //        androidA.innerHTML = '开始下载，请等待...';
+    //    });
+    //    iosA.addEventListener('click', function () {
+    //        iosA.innerHTML = '开始下载，请等待...';
+    //    });
+</script>
+</body>
+</html>
